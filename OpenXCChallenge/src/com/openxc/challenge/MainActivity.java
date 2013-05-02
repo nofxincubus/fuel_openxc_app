@@ -1,6 +1,5 @@
 package com.openxc.challenge;
 
-import org.achartengine.chartdemo.demo.chart.ScatterChart;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -27,10 +26,9 @@ public class MainActivity extends Activity {
 
 	private VehicleManager mVehicleManager;
 	static private TextView mVehicleSpeedView;
-	ScatterChart sChart = new ScatterChart();
 	private ProgressBar aClock;
 	private final Handler mHandler = new Handler();
-	
+
 
 	private ServiceConnection mConnection = new ServiceConnection() {
 		// Called when the connection with the service is established
@@ -42,9 +40,9 @@ public class MainActivity extends Activity {
 			try {
 				mVehicleManager.addListener(VehicleSpeed.class, mSpeedListener);
 				mVehicleManager.addListener(Latitude.class,
-                        mLatitude);
-                mVehicleManager.addListener(Longitude.class,
-                        mLongitude);
+						mLatitude);
+				mVehicleManager.addListener(Longitude.class,
+						mLongitude);
 			} catch (VehicleServiceException e) {
 				e.printStackTrace();
 			} catch (UnrecognizedMeasurementTypeException e) {
@@ -58,60 +56,60 @@ public class MainActivity extends Activity {
 			mVehicleManager = null;
 		}
 	};
-	
+
 
 	VehicleSpeed.Listener mSpeedListener = new VehicleSpeed.Listener() {
-	    public void receive(Measurement measurement) {
-	    	final VehicleSpeed speed = (VehicleSpeed) measurement;
-	        MainActivity.this.runOnUiThread(new Runnable() {
-	            public void run() {
-	                mVehicleSpeedView.setText(
-	                    "Vehicle speed (km/h): " + speed.getValue().doubleValue());
-	                aClock.setProgress(speed.getValue().intValue());
-	            }
-	        });
-	    }
+		public void receive(Measurement measurement) {
+			final VehicleSpeed speed = (VehicleSpeed) measurement;
+			MainActivity.this.runOnUiThread(new Runnable() {
+				public void run() {
+					mVehicleSpeedView.setText(
+							"Vehicle speed (km/h): " + speed.getValue().doubleValue());
+					aClock.setProgress(speed.getValue().intValue());
+				}
+			});
+		}
 	};
-	
-	Latitude.Listener mLatitude =
-            new Latitude.Listener() {
-        public void receive(Measurement measurement) {
-            final Latitude lat = (Latitude) measurement;
-            mHandler.post(new Runnable() {
-                public void run() {
-                }
-            });
-        }
-    };
 
-    Longitude.Listener mLongitude =
-            new Longitude.Listener() {
-        public void receive(Measurement measurement) {
-            final Longitude lng = (Longitude) measurement;
-            mHandler.post(new Runnable() {
-                public void run() {
-                	//TODO : Add to Map
-                }
-            });
-        }
-    };
+	Latitude.Listener mLatitude =
+			new Latitude.Listener() {
+		public void receive(Measurement measurement) {
+			final Latitude lat = (Latitude) measurement;
+			mHandler.post(new Runnable() {
+				public void run() {
+				}
+			});
+		}
+	};
+
+	Longitude.Listener mLongitude =
+			new Longitude.Listener() {
+		public void receive(Measurement measurement) {
+			final Longitude lng = (Longitude) measurement;
+			mHandler.post(new Runnable() {
+				public void run() {
+					//TODO : Add to Map
+				}
+			});
+		}
+	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+
 		mVehicleSpeedView = (TextView)findViewById(R.id.textView1);
 		aClock = (ProgressBar)findViewById(R.id.progressBar1);
-		
+
 		Intent intent = new Intent(this, VehicleManager.class);
-        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);  
+		bindService(intent, mConnection, Context.BIND_AUTO_CREATE);  
 	}
-	
+
 	public void onPause() {
-	    super.onPause();
-	    Log.i("openxc", "Unbinding from vehicle service");
-	    unbindService(mConnection);
+		super.onPause();
+		Log.i("openxc", "Unbinding from vehicle service");
+		unbindService(mConnection);
 	}
 
 	@Override
