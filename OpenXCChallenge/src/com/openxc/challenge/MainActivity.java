@@ -2,11 +2,10 @@ package com.openxc.challenge;
 
 
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
-
-import com.actionbarsherlock.view.Menu;
 
 public class MainActivity extends BaseActivity {
 	
@@ -22,7 +21,7 @@ public class MainActivity extends BaseActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		this.getSupportMenuInflater().inflate(R.menu.main, menu);
+		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
 
